@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -46,38 +47,57 @@ public class Page_SF extends Page_base{
 		
 	}
 	
-	public void insertUser(String testo) {
-		insertText(testo,"username");
-	}
-	
-	public void insertPassword(String testo) {
-		insertText(testo,"password");
-	}
-	
-	public void clickAccess() {
-		clickButton("Login");
-	}	
 	
 	public boolean checkLogin(){
 		if(driver.getTitle().equals("Accedi | Salesforce")) {
 			return false;
 		}
         WebDriverWait wait = new WebDriverWait(driver,30);
-        wait.until(ExpectedConditions.titleIs("Home | Salesforce"));
+        try {
+        	wait.until(ExpectedConditions.titleIs("Home | Salesforce"));
+        }catch (TimeoutException e) {
+        	return false;
+        }
 		return true;
 	}
 	
 	public boolean makeLogin() {
 		goToUrl("https://login.salesforce.com");
-		insertUser(USERNAME);
-		insertPassword(PASSWORD);
-		clickAccess();
+		insertText(USERNAME,"username");
+		insertText(PASSWORD,"password");
+		clickButton("Login");
 		if(checkLogin())
 			return true;
 		else
 			return false;
 	}
+	
+	public boolean makeLoginOtherUser(String name) {
+		goToUrl("https://login.salesforce.com");
+		File configFile = new File("src/configuration.properties");
+		FileReader reader;
+		String tUsername = new String();
+		String tPassword = new String();
+		try {
+			reader = new FileReader(configFile);
+			Properties props = new Properties();
+			props.load(reader);
+			tUsername = props.getProperty(name+"_username");
+			tPassword = props.getProperty(name+"_password");			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
+		insertText(tUsername,"username");
+		insertText(tPassword,"password");
+		clickButton("Login");
+		if(checkLogin())
+			return true;
+		else
+			return false;
+	}
 
 	public void goToTab(String tab) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
