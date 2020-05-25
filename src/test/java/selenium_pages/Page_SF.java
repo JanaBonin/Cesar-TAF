@@ -102,37 +102,61 @@ public class Page_SF extends Page_base{
 	public void goToTab(String tab) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='slds-truncate' and text()='"+tab+"']")));
-		WebElement tabElement = driver.findElement(By.xpath("//span[@class='slds-truncate' and text()='"+tab+"']"));
+		WebElement tabElement = getElementByXpath("//span[@class='slds-truncate' and text()='"+tab+"']");
 		jsclick(tabElement);
 	}
-	public void selectObject(String object) {
+
+	public void selectRecord(String object) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='"+object+"']")));
-		driver.findElement(By.xpath("//a[@title='"+object+"']")).click();
+		getElementByXpath("//a[@title='"+object+"']").click();
+	}
+	
+	public void goToDetails() {
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@title='Details']//a[@data-label='Details']")));
+		getElementByXpath("//li[@title='Details']//a[@data-label='Details']").click();
+	}
+	
+	public boolean findLabel(String label){
+		WebDriverWait wait = new WebDriverWait(driver,10);
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']")));
+		}
+		catch(TimeoutException ex) {
+			Assert.fail("No such label found");
+		}
+		
+		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']");
+		String field = element.getText();
+		
+		if(field.equals(label)) {
+			return true;
+		}else{
+			return false;}		
 	}
 	
 	public String getTextForm(String label) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-text[1]")));
-		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-text[1]"));
+		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-text[1]");
 		String field = element.getText();
-		
 		return field;
 	}
 	
 	public String getNameForm(String label) {
+		
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-name[1]")));
-		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-name[1]"));
+		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-name[1]");
 		String field = element.getText();
-		
 		return field;
 	}
 	
 	public String getClickableTextForm(String label) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::a[1]")));
-		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::a[1]"));
+		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::a[1]");
 		String field = element.getText();
 		
 		return field;
@@ -141,7 +165,7 @@ public class Page_SF extends Page_base{
 	public String getPhoneForm(String label) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-phone[1]")));
-		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-phone[1]"));
+		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-phone[1]");
 		String field = element.getText();
 		
 		return field;
@@ -150,7 +174,7 @@ public class Page_SF extends Page_base{
 	public String getEmailForm(String label) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::a[1]")));
-		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::a[1]"));
+		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::a[1]");
 		String field = element.getText();
 		
 		return field;
@@ -159,62 +183,82 @@ public class Page_SF extends Page_base{
 	public void newButton() {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='slds-truncate' and text()='New']")));
-		driver.findElement(By.xpath("//div[@class='slds-truncate' and text()='New']")).click();
+		getElementByXpath("//div[@class='slds-truncate' and text()='New']").click();
 	}
 	
 	public void setValueCombobox (String label, String value) {
-		WebDriverWait wait = new WebDriverWait(driver,30);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]")));
-		driver.findElement(By.xpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]")).click();
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@role='menuitemradio' and @title='"+value+"']")));
-		driver.findElement(By.xpath("//a[@role='menuitemradio' and @title='"+value+"']")).click();
+		WebDriverWait wait = new WebDriverWait(driver,15);
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]")));
+			getElementByXpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]").click();
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@role='menuitemradio' and @title='"+value+"']")));
+			getElementByXpath("//a[@role='menuitemradio' and @title='"+value+"']").click();
+		}
+		catch(TimeoutException ex) {
+			System.out.println("No TextForm with this label found");
+		}
 	}
 	
 	public void writeTextForm(String label, String value) {
-		WebDriverWait wait = new WebDriverWait(driver,30);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
-		WebElement element = driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]"));
-		element.clear();
-		element.sendKeys(value);
+		WebDriverWait wait = new WebDriverWait(driver,15);
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
+			WebElement element = getElementByXpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]");
+			element.clear();
+			element.sendKeys(value);
+		}
+		catch(TimeoutException ex) {
+			System.out.println("No TextForm with this label found");
+		}
 	}
 	
 	public void writeTextArea(String label, String value) {
-		WebDriverWait wait = new WebDriverWait(driver,30);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]")));
-		WebElement element = driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]"));
-		element.clear();
-		element.sendKeys(value);
+		WebDriverWait wait = new WebDriverWait(driver,15);
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]")));
+			WebElement element = getElementByXpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]");
+			element.clear();
+			element.sendKeys(value);
+		}
+		catch(TimeoutException ex) {
+			System.out.println("No TextArea with this label found");
+		}
 		
 	}
 	
 	public void saveButton() {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@title='Save']")));
-		driver.findElement(By.xpath("//button[@title='Save']")).click();
+		getElementByXpath("//button[@title='Save']").click();
 	}
 	
 	public WebElement search(String text,String field) {
 		goToUrl(LINK+"/lightning/page/home");
 		WebDriverWait wait = new WebDriverWait(driver,10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@title='Search Salesforce']")));
-		
-		
-		WebElement fieldBox = getElementByXpath("//input[@id='input-5']");
-		fieldBox.sendKeys(Keys.BACK_SPACE+""+Keys.BACK_SPACE+""+Keys.BACK_SPACE+""+field);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//lightning-base-combobox-formatted-text[@title='"+field+"']")));
-		jsclick(getElementByXpath("//lightning-base-combobox-formatted-text[@title='"+field+"']"));
-		
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@title='Search "+field+"']")));
-		WebElement inputBox = getElementByXpath("//input[@title='Search "+field+"']");
-		inputBox.sendKeys(text);
+			
 		try {
-			Thread.sleep(300);
+			Thread.sleep(2500);
+			WebElement fieldBox = getElementByXpath("//input[@id='input-5']");
+			fieldBox.sendKeys(Keys.BACK_SPACE+""+Keys.BACK_SPACE+""+Keys.BACK_SPACE+""+field);
+			Thread.sleep(500);
+			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-combobox-formatted-text[@title='"+field+"']")));
+			jsclick(getElementByXpath("//lightning-base-combobox-formatted-text[@title='"+field+"']"));
+		
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains (@title, 'Search')]")));
+			WebElement inputBox = getElementByXpath("//input[contains (@title, 'Search')]");
+				
+			Thread.sleep(1500);
+			inputBox.click();
+			inputBox.sendKeys(text);
 			inputBox.sendKeys(Keys.ENTER);
+		
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				e.printStackTrace();
 		}
 		wait.until(ExpectedConditions.titleIs(text+" - Search | Salesforce"));
+		
+			//-----------------------------------------------------------------------------------------------------------
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='"+field+"']/../following::span[@class='slds-badge slds-badge_lightest']")));
 		if(getElementByXpath("//span[text()='"+field+"']/../following::span[@class='slds-badge slds-badge_lightest']").getAttribute("innerHTML").equals("0"))
 			return null;
@@ -227,9 +271,9 @@ public class Page_SF extends Page_base{
 	public void editButton(){
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon")));
-		driver.findElement(By.xpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon")).click();
+		getElementByXpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon").click();
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='Edit']")));
-		driver.findElement(By.xpath("//a[@title='Edit']")).click();
+		getElementByXpath("//a[@title='Edit']").click();
 		
 	}
 	
@@ -254,19 +298,19 @@ public class Page_SF extends Page_base{
 			find.click();
 			editButton();
 			for(Map<String,String> row : value) {
-				insert(row.get("Field"),row.get("Value"),row.get("Type"));
-			}
-			saveButton();
-		}
-		else
-			Assert.fail("Elemento per update non trovato");
+					insert(row.get("Field"), row.get("Value"), row.get("Type"));
+				}
+				saveButton();
+		}else
+			Assert.fail("Can't find the record to update");
+		
 	}
 	
 	public void goToPage(String object) {
 		goToUrl(LINK+"/lightning/o/"+object+"/list?filterName=Recent");	
 	}
 	
-	public void newObject(String object,List<Map<String,String>> value) {
+	public void newRecord(String object,List<Map<String,String>> value) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		if(value.isEmpty())
 			Assert.fail("Value is empty");
@@ -279,20 +323,15 @@ public class Page_SF extends Page_base{
 		}
 	}
 
-	
-	
-	
-	public boolean checkIfObjectNotCreated() {
+	public boolean checkIfRecordCreated() throws TimeoutException {
 		WebDriverWait wait = new WebDriverWait(driver,10);
-		wait.until(ExpectedConditions.urlContains("/new"));
+		try{
+			wait.until(ExpectedConditions.urlContains("/view"));
+		}
+		catch(TimeoutException ex) {
+			return false;
+		}
 		return true;
-	}
-	
-	public boolean checkIfObjectCreated() {
-		WebDriverWait wait = new WebDriverWait(driver,10);
-		wait.until(ExpectedConditions.urlContains("/view"));
-		return true;
-	
 	}
 	
 }
