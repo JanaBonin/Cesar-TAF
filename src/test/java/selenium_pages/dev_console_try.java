@@ -9,7 +9,7 @@ public class dev_console_try {
 		Page_DevConsole devCons = new Page_DevConsole();
 		Page_SF_Login sfLogin = new Page_SF_Login();
 		sfLogin.openChromeWindow();
-		sfLogin.goToUrl("https://login.salesforce.com");
+		sfLogin.goToUrl("https://www.google.it");
 		sfLogin.insertText("sfdevopsrpaframework@digita.com","username");
 		sfLogin.insertText("sfdevopsezn88","password");
 		sfLogin.clickAccess();
