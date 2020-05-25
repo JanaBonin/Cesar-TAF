@@ -14,7 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Page_SF_Lead extends Page_SF_Login {
+public class Page_SF_Lead extends Page_SF {
 
 	public Page_SF_Lead() {
 		super();

@@ -19,25 +19,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Page_SF_Login extends Page_base{
+public class Page_SF extends Page_base{
 	
-	protected String BNEW; 
-	protected String FPHONE; 
-	protected String FFNAME;
 	protected String USERNAME;
 	protected String PASSWORD;
 	protected String LINK;
 	
-	public Page_SF_Login() {
+	public Page_SF() {
 		File configFile = new File("src/configuration.properties");
 		FileReader reader;
 		try {
 			reader = new FileReader(configFile);
 			Properties props = new Properties();
 			props.load(reader);
-			BNEW = props.getProperty("ButtonNew");
-			FPHONE = props.getProperty("FieldPhone");
-			FFNAME = props.getProperty("FieldFirstName");
 			USERNAME = props.getProperty("Username");
 			PASSWORD = props.getProperty("Password");
 			LINK = props.getProperty("Link");

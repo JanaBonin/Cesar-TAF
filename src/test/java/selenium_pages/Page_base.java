@@ -66,6 +66,4 @@ public class Page_base {
 		driver.close();
 	}
 	
-	
-	
 }

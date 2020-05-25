@@ -10,14 +10,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import selenium_pages.Page_SF_Lead;
-import selenium_pages.Page_SF_Login;
+import selenium_pages.Page_SF;
 import selenium_pages.Page_base;
 import java.util.ArrayList;
 
 
 public class StepsSalesforce {
 	
-	private Page_SF_Login standard = new Page_SF_Login();
+	private Page_SF standard = new Page_SF();
 	
 	@Given ("Make login on SalesForce with Chrome")
 	public void make_login_Chrome() {
