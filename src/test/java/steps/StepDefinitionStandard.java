@@ -2,7 +2,6 @@ package steps;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import selenium_pages.Page_GoogleHomepage;
 import io.cucumber.java.en.Then;
 import selenium_pages.Page_base;
 
