@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -79,12 +82,19 @@ public class StepsSalesforce {
 	    standard.goToDetails();
 	}
 	
-	/*
-	@Then("Update {string} name of record {string}")
-	public void Then_update_name_of_lead(String entityObject, String searchText, DataTable dataTable) {
-	   update_name_of_lead(entityObject,searchText,dataTable);
+	@Then ("Check if {string} tab is clickable")
+	public boolean check_if_tab_is_clickable (String title) {
+		
+		WebDriverWait wait = new WebDriverWait(Page_base.driver,10);
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@title='"+title+"']")));	
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
-	*/
+	
 	@Then("Check insert successfully")
 	public void check_insert_successfully() {
 		if(!standard.checkIfRecordCreated())
@@ -111,7 +121,7 @@ public class StepsSalesforce {
 		}
 	}
 	
-	@Then("Check if the label {string} exists")
+	@Then("Check if {string} label exists")
 	public void check_if_the_label_exists(String label) {
 	    boolean var = standard.findLabel(label);
 	    if (!var) {
@@ -119,7 +129,7 @@ public class StepsSalesforce {
 	    }
 	}
 	
-	@Then("Check if the label {string} does not exists")
+	@Then("Check if {string} label does not exist")
 	public void check_if_the_label_doesnt_exists(String label) {
 	    boolean var = standard.findLabel(label);
 	    if (var) {
@@ -127,7 +137,7 @@ public class StepsSalesforce {
 	    }
 	}
 	
-	@Given("Switch user to {string}")
+	@Given("Switch {string} to {string}")
 	public void switch_user_to(String username, String profile) {
 		SetProfileUser send = new SetProfileUser(username,profile);
 	}

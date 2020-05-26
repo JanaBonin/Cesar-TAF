@@ -107,8 +107,12 @@ public class Page_SF extends Page_base{
 	}
 
 	public void selectRecord(String object) {
-		WebDriverWait wait = new WebDriverWait(driver,30);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='"+object+"']")));
+		WebDriverWait wait = new WebDriverWait(driver,5);
+		try{
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='"+object+"']")));
+		}catch(TimeoutException e){
+			search(object,"All");
+		}
 		getElementByXpath("//a[@title='"+object+"']").click();
 	}
 	
@@ -307,7 +311,7 @@ public class Page_SF extends Page_base{
 	}
 	
 	public void goToPage(String object) {
-		goToUrl(LINK+"/lightning/o/"+object+"/list?filterName=Recent");	
+		goToUrl(LINK+"/lightning/o/"+object+"/list");	
 	}
 	
 	public void newRecord(String object,List<Map<String,String>> value) {
