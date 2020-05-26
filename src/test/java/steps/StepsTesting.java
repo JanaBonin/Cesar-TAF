@@ -25,7 +25,7 @@ public class StepsTesting {
 		
 		standard.insert("Close Date", "31/05/2020", "Text");
 		standard.insert("Amount", "20000", "Text");
-		standard.insert("Opportunity Name", "Testing AP", "Text");
+		standard.insert("Opportunity Name", "Michele Test", "Text");
 		standard.insert("Account Name", "Deloitte", "Wrapper");
 		standard.insert("Discount Percentage", "20", "Text");
 		standard.insert("Stage", "Prospecting", "Combobox");
@@ -49,13 +49,16 @@ public class StepsTesting {
 			
 			Thread.sleep(5000);
 			//wait.until(ExpectedConditions.(By.xpath("//span[contains(text(), 'Opportunity Name: Testing AP')]/ancestor::a")));
-			standard.jsclick(standard.driver.findElement(By.xpath("//span[contains(text(), 'Opportunity Name: Testing AP')]/ancestor::a")));
+			standard.jsclick(standard.driver.findElement(By.xpath("//span[contains(text(), 'Opportunity Name: Michele Test')]/ancestor::a")));
 			
 			Thread.sleep(3000);
-			//wait1.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='slds-truncate' and text()='Approve']")));
-			standard.jsclick(standard.driver.findElement(By.xpath("//div[@class='slds-truncate' and text()='Approve']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='slds-truncate' and text()='Approve']")));
+			standard.driver.findElement(By.xpath("//div[@class='slds-truncate' and text()='Approve']")).click();
 			
-			WebElement element = standard.search("Testing AP", "Opportunities");
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Approve']/ancestor::button")));
+			standard.driver.findElement(By.xpath("//span[text()='Approve']/ancestor::button")).click();
+			
+			WebElement element = standard.search("Michele Test", "Opportunities");
 			element.click();
 			standard.goToDetails();
 			String status = standard.getTextForm("Approval Status");
