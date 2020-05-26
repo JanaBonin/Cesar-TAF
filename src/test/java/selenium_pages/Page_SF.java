@@ -350,19 +350,19 @@ public class Page_SF extends Page_base{
 	public void insert(String Field, String Value, String Type) {
 		Type = Type.toLowerCase();
 		switch(Type) {
-		case "Combobox":
+		case "combobox":
 			setValueCombobox(Field,Value);
 			break;
-		case "Text":
+		case "text":
 			writeTextForm(Field,Value);
 			break;
-		case "TextArea":
+		case "textArea":
 			writeTextArea(Field,Value);
 			break;
-		case "Checkbox":
+		case "checkbox":
 			clickCheckbox(Field);
 			break;
-		case "Wrapper":
+		case "wrapper":
 			fillAutocompleteWrapper(Field,Value);
 			break;
 		}
