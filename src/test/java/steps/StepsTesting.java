@@ -27,8 +27,8 @@ public class StepsTesting {
 		standard.insert("Amount", "20000", "Text");
 		standard.insert("Opportunity Name", "Michele Test", "Text");
 		standard.insert("Account Name", "Deloitte", "Wrapper");
-		standard.insert("Discount Percentage", "20", "Text");
 		standard.insert("Stage", "Prospecting", "Combobox");
+		standard.insert("Discount Percentage", "20", "Text");
 		standard.insert("Type", "New Customer", "Combobox");
 		
 		standard.saveButton();
@@ -42,34 +42,26 @@ public class StepsTesting {
 		
 		wait = new WebDriverWait(standard.driver, 15);
 		
-		try {
-			Thread.sleep(5000);
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@data-aura-class='uiButton forceHeaderButton unsNotificationsCounter']")));
-			standard.jsclick(standard.driver.findElement(By.xpath("//button[@data-aura-class='uiButton forceHeaderButton unsNotificationsCounter']")));
-			
-			Thread.sleep(5000);
-			//wait.until(ExpectedConditions.(By.xpath("//span[contains(text(), 'Opportunity Name: Testing AP')]/ancestor::a")));
-			standard.jsclick(standard.driver.findElement(By.xpath("//span[contains(text(), 'Opportunity Name: Michele Test')]/ancestor::a")));
-			
-			Thread.sleep(3000);
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='slds-truncate' and text()='Approve']")));
-			standard.driver.findElement(By.xpath("//div[@class='slds-truncate' and text()='Approve']")).click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Approve']/ancestor::button")));
-			standard.driver.findElement(By.xpath("//span[text()='Approve']/ancestor::button")).click();
-			
-			WebElement element = standard.search("Michele Test", "Opportunities");
-			element.click();
-			standard.goToDetails();
-			String status = standard.getTextForm("Approval Status");
-			if(!status.equals("Approved")) {
-				Assert.fail();
-				
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@data-aura-class='uiButton forceHeaderButton unsNotificationsCounter']")));
+		standard.jsclick(standard.driver.findElement(By.xpath("//button[@data-aura-class='uiButton forceHeaderButton unsNotificationsCounter']")));
 		
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(text(), 'Opportunity Name: Testing AP')]/ancestor::a")));
+		standard.jsclick(standard.driver.findElement(By.xpath("//span[contains(text(), 'Opportunity Name: Michele Test')]/ancestor::a")));
+		
+		//Thread.sleep(3000);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='slds-truncate' and text()='Approve']")));
+		standard.driver.findElement(By.xpath("//div[@class='slds-truncate' and text()='Approve']")).click();
+		
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Approve']/ancestor::button")));
+		standard.driver.findElement(By.xpath("//span[text()='Approve']/ancestor::button")).click();
+		
+		WebElement element = standard.search("Michele Test", "Opportunities");
+		element.click();
+		standard.goToDetails();
+		String status = standard.getTextForm("Approval Status");
+		if(!status.equals("Approved")) {
+			Assert.fail();
+		}
 	}
 
 }
