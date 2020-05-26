@@ -61,6 +61,7 @@ public class StepsTesting {
 			String status = standard.getTextForm("Approval Status");
 			if(!status.equals("Approved")) {
 				Assert.fail();
+				
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
