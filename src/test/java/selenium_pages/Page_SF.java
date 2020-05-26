@@ -110,10 +110,10 @@ public class Page_SF extends Page_base{
 		WebDriverWait wait = new WebDriverWait(driver,5);
 		try{
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='"+object+"']")));
+			getElementByXpath("//a[@title='"+object+"']").click();
 		}catch(TimeoutException e){
-			search(object,"All");
+			search(object,"All").click();
 		}
-		getElementByXpath("//a[@title='"+object+"']").click();
 	}
 	
 	public void goToDetails() {
