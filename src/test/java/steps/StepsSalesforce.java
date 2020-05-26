@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -53,16 +54,10 @@ public class StepsSalesforce {
 	
 	
 	@Given("Update {string} name of record {string}")
-	public void update_name_of_lead(String entityObject, String searchText, DataTable dataTable) {
-	   List<Map<String,String>> value = dataTable.asMaps();
-		if(entityObject.equalsIgnoreCase("Lead")) {
-			standard.update("Leads",searchText,value);
-		}
-		if(entityObject.equalsIgnoreCase("Account")) {
-			standard.update("Accounts",searchText,value);
-		}
-		
-	}
+	public void update_name_of_record(String entityObject, String searchText, DataTable dataTable) {
+		List<Map<String,String>> value = dataTable.asMaps();
+			standard.update(entityObject, searchText, value);
+			}  
 	
 	@Given("Insert {string} with this value for the field")
 	public void insert_string_Value(String entity, DataTable dataTable) {
@@ -130,6 +125,30 @@ public class StepsSalesforce {
 	@Given("Switch user to {string}")
 	public void switch_user_to(String username, String profile) {
 		SetProfileUser send = new SetProfileUser(username,profile);
+	}
+	
+	@When("Open {string} in {string}")
+	public void open_in(String record, String object) {
+		WebElement element = standard.search(record, object);
+		element.click();
+	}
+	
+	@Then("Check if {string} is {string}")
+	public void check_if_is (String label, String expectValue) {
+		standard.goToDetails();
+		String realValue = standard.getTextForm(label);
+		if (!expectValue.equals(realValue)) {
+			Assert.fail();
+		}
+	}
+	
+	@Then("Check if {string} is not {string}")
+	public void check_if_is_not (String label, String expectValue) {
+		standard.goToDetails();
+		String realValue = standard.getTextForm(label);
+		if (expectValue.equals(realValue)) {
+			Assert.fail();
+		}
 	}
 
 }

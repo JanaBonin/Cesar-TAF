@@ -98,6 +98,10 @@ public class Page_SF extends Page_base{
 		else
 			return false;
 	}
+	
+	public void goToPage(String object) {
+		goToUrl(LINK+"/lightning/o/"+object+"/list?filterName=Recent");	
+	}
 
 	public void goToTab(String tab) {
 		WebDriverWait wait = new WebDriverWait(driver,30);
@@ -120,20 +124,20 @@ public class Page_SF extends Page_base{
 	
 	public boolean findLabel(String label){
 		WebDriverWait wait = new WebDriverWait(driver,10);
+		String field = new String();
 		try {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']")));
+		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']"));
+		field = element.getText();
 		}
 		catch(TimeoutException ex) {
-			Assert.fail("No such label found");
+			return false;
 		}
-		
-		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']");
-		String field = element.getText();
-		
 		if(field.equals(label)) {
 			return true;
-		}else{
-			return false;}		
+			}else {
+				return false;
+			}
 	}
 	
 	public String getTextForm(String label) {
@@ -141,6 +145,15 @@ public class Page_SF extends Page_base{
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-text[1]")));
 		WebElement element = getElementByXpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-text[1]");
 		String field = element.getText();
+		return field;
+	}
+	
+	public String getNumberForm(String label) {
+		WebDriverWait wait = new WebDriverWait(driver,10);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-number[1]")));
+		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='"+label+"']/../following::lightning-formatted-number[1]"));
+		String field = element.getText();
+		
 		return field;
 	}
 	
@@ -180,6 +193,19 @@ public class Page_SF extends Page_base{
 		return field;
 	}
 	
+	public String getCheckboxValue(String label) {
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='test-id__field-label' and text()='Private']/../following::input[1]")));
+		WebElement element = driver.findElement(By.xpath("//span[@class='test-id__field-label' and text()='Private']/../following::input[1]"));
+		Boolean selected = element.isSelected();
+		
+		if(selected == true) {
+			return "Checkbox selecetd";
+		} else{
+			return "Checkbox not selected";
+		}
+	}
+	
 	public void newButton() {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='slds-truncate' and text()='New']")));
@@ -187,49 +213,102 @@ public class Page_SF extends Page_base{
 	}
 	
 	public void setValueCombobox (String label, String value) {
-		WebDriverWait wait = new WebDriverWait(driver,15);
+		WebDriverWait wait = new WebDriverWait(driver,10);
 		try {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]")));
-			getElementByXpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]").click();
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@role='menuitemradio' and @title='"+value+"']")));
-			getElementByXpath("//a[@role='menuitemradio' and @title='"+value+"']").click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]")));
+		driver.findElement(By.xpath("//span[@data-aura-class='uiPicklistLabel']//span[text()='"+label+"']/../following::a[1]")).click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@role='menuitemradio' and @title='"+value+"']")));
+		driver.findElement(By.xpath("//a[@role='menuitemradio' and @title='"+value+"']")).click();
 		}
 		catch(TimeoutException ex) {
-			System.out.println("No TextForm with this label found");
+			System.out.println("No ComboBox with "+label+" label found");
 		}
 	}
-	
+		
 	public void writeTextForm(String label, String value) {
-		WebDriverWait wait = new WebDriverWait(driver,15);
+		WebDriverWait wait = new WebDriverWait(driver,10);
 		try {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
-			WebElement element = getElementByXpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]");
-			element.clear();
-			element.sendKeys(value);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
+		WebElement element = driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]"));
+		element.clear();
+		element.sendKeys(value);
 		}
 		catch(TimeoutException ex) {
-			System.out.println("No TextForm with this label found");
+			System.out.println("No TextForm with "+label+" label found");
 		}
 	}
 	
 	public void writeTextArea(String label, String value) {
-		WebDriverWait wait = new WebDriverWait(driver,15);
+		WebDriverWait wait = new WebDriverWait(driver,10);
 		try {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]")));
-			WebElement element = getElementByXpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]");
-			element.clear();
-			element.sendKeys(value);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]")));
+		WebElement element = driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::textarea[1]"));
+		element.clear();
+		element.sendKeys(value);
 		}
 		catch(TimeoutException ex) {
-			System.out.println("No TextArea with this label found");
+			System.out.println("No TextArea with "+label+" label found");
 		}
-		
+	}
+	
+	public void clickCheckbox(String label){
+		WebDriverWait wait = new WebDriverWait(driver,10);
+		try {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
+		driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")).click();;
+		}
+		catch(TimeoutException ex) {
+			System.out.println("No Checkbox with "+label+" label found");
+		}
+	}
+	
+	public void fillAutocompleteWrapper(String label, String value){
+		WebDriverWait wait = new WebDriverWait(driver,10);
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
+			WebElement element = driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]"));
+			
+			element.click();
+			element.sendKeys(value);
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@title='"+value+"']")));
+			driver.findElement(By.xpath("//div[@title='"+value+"']")).click();
+		}
+		catch(TimeoutException ex) {
+			System.out.println("No AutocompleteWrapper with "+label+" label found");
+		}
+	}
+	
+	public void editAutocompleteWrapper(String label, String value){
+		WebDriverWait wait = new WebDriverWait(driver,10);
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]")));
+			driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::span[@class='deleteIcon']")).click();
+			WebElement element = driver.findElement(By.xpath("//label[@data-aura-class='uiLabel']//span[text()='"+label+"']/../following::input[1]"));
+			element.click();
+			element.sendKeys(value);
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@title='"+value+"']")));
+			driver.findElement(By.xpath("//div[@title='"+value+"']")).click();
+		}
+		catch(TimeoutException ex) {
+			System.out.println("No AutocompleteWrapper with "+label+" label found");
+		}
 	}
 	
 	public void saveButton() {
 		WebDriverWait wait = new WebDriverWait(driver,30);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@title='Save']")));
 		getElementByXpath("//button[@title='Save']").click();
+	}
+	
+	public void editButton(){
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon")));
+		getElementByXpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon").click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='Edit']")));
+		getElementByXpath("//a[@title='Edit']").click();
+		
 	}
 	
 	public WebElement search(String text,String field) {
@@ -268,27 +347,24 @@ public class Page_SF extends Page_base{
 		}
 	}
 	
-	public void editButton(){
-		WebDriverWait wait = new WebDriverWait(driver,30);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon")));
-		getElementByXpath("//div[@class='windowViewMode-normal oneContent active lafPageHost']//slot[@slot='header']//li[@data-aura-class='oneActionsDropDown']//lightning-icon").click();
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='Edit']")));
-		getElementByXpath("//a[@title='Edit']").click();
-		
-	}
-	
 	public void insert(String Field, String Value, String Type) {
 		Type = Type.toLowerCase();
 		switch(Type) {
-			case "combobox":
-				setValueCombobox(Field,Value);
-				break;
-			case "text":
-				writeTextForm(Field,Value);
-				break;
-			case "textarea":
-				writeTextArea(Field,Value);
-				break;
+		case "Combobox":
+			setValueCombobox(Field,Value);
+			break;
+		case "Text":
+			writeTextForm(Field,Value);
+			break;
+		case "TextArea":
+			writeTextArea(Field,Value);
+			break;
+		case "Checkbox":
+			clickCheckbox(Field);
+			break;
+		case "Wrapper":
+			fillAutocompleteWrapper(Field,Value);
+			break;
 		}
 	}
 	
@@ -298,16 +374,18 @@ public class Page_SF extends Page_base{
 			find.click();
 			editButton();
 			for(Map<String,String> row : value) {
-					insert(row.get("Field"), row.get("Value"), row.get("Type"));
+				if(row.get("Type")=="Wrapper") {
+					editAutocompleteWrapper(row.get("Field"), row.get("Value"));
 				}
+				else {
+				insert(row.get("Field"), row.get("Value"), row.get("Type"));
+				}
+			}
 				saveButton();
-		}else
+			}
+		else{
 			Assert.fail("Can't find the record to update");
-		
-	}
-	
-	public void goToPage(String object) {
-		goToUrl(LINK+"/lightning/o/"+object+"/list?filterName=Recent");	
+		}
 	}
 	
 	public void newRecord(String object,List<Map<String,String>> value) {
@@ -323,6 +401,23 @@ public class Page_SF extends Page_base{
 		}
 	}
 
+	public void newRecordRecordType(String object, String recordtype, List<Map<String,String>> value) {
+		//si potrebbe inserire un controllo se sto nella pagina corretta per l'inserimento del nuovo record
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		object = object.replaceAll(" ","");
+		goToPage(object);
+		wait.until(ExpectedConditions.titleContains("Recently Viewed |"));
+		newButton();
+		
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='"+recordtype+"']")));
+		driver.findElement(By.xpath("//span[text()='"+recordtype+"']")).click();
+		driver.findElement(By.xpath("//button//span[text()='Next']")).click();
+		
+		for(Map<String,String> row: value) {
+			insert(row.get("Field"),row.get("Value"),row.get("Type"));
+		}
+	}
+	
 	public boolean checkIfRecordCreated() throws TimeoutException {
 		WebDriverWait wait = new WebDriverWait(driver,10);
 		try{
